@@ -97,7 +97,23 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/game_meta_critic"
-                tools:text="game\ndescription\ngame\ndescription" />
+                tools:text="game\ndescription\ngame\ndescription"/>
+
+            <TextView
+                android:id="@+id/game_website"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="16dp"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:gravity="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/game_description"
+                tools:text="website"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -27,7 +27,7 @@ class VideoGamesRepository(
                 maxSize = 60,
                 enablePlaceholders = false
             ),
-            pagingSourceFactory = { VideoGamesPagingSource(api, search) }
+            pagingSourceFactory = { VideoGamesPagingSource(api, likedGameDetailsDao, search) }
         ).liveData
 
 
@@ -38,4 +38,6 @@ class VideoGamesRepository(
         likedGameDetailsDao.deleteLikedGameDetails(gameDetails)
 
     fun getAllLikedGameDetails() = likedGameDetailsDao.getAllLikedGameDetails()
+
+    fun getAllGames() = likedGameDetailsDao.getAllGames()
 }

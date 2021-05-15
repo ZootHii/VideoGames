@@ -1,5 +1,7 @@
 package com.zoothii.videogames.ui
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
@@ -13,6 +15,7 @@ import com.zoothii.videogames.MainActivity
 import com.zoothii.videogames.R
 import com.zoothii.videogames.databinding.FragmentGameBinding
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class GameFragment :
@@ -47,6 +50,12 @@ class GameFragment :
                         gameDetails.description,
                         HtmlCompat.FROM_HTML_MODE_LEGACY
                     )
+                gameWebsite.apply {
+                    text = gameDetails.website
+                    setOnClickListener {
+                        onClickWebsite(gameDetails.website)
+                    }
+                }
                 progressBarGame.visibility = View.GONE
                 gameAddLikedButton.apply {
                     visibility = View.VISIBLE
@@ -57,8 +66,17 @@ class GameFragment :
         navigationBarControlWithBackButton()
     }
 
+    private fun onClickWebsite(website: String){
+        var site = website
+        if (!site.startsWith("http://") && !site.startsWith("https://")) {
+            site = "http://$website";
+        }
+        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(site))
+        startActivity(browserIntent)
+    }
+
     private fun buttonBehaviour(gameDetails: GameDetails) {
-        videoGamesViewModel.getLikedGameDetails()
+        videoGamesViewModel.getAllLikedGameDetails()
             .observe(viewLifecycleOwner, { gameDetailsList ->
                 val likedGamesDetails = gameDetailsList.toCollection(ArrayList())
 

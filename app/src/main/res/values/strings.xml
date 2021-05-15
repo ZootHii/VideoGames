@@ -6,5 +6,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="home_not_found">Sorry, the game you are looking for was not found!</string>
     <string name="favorites_not_found">You don\'t have any favorite games yet!</string>
+    <string name="no_internet">There is no connection available.</string>
     <string name="add_to_favorites">Add to favorites</string>
 </resources>

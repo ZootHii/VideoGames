@@ -1,20 +1,19 @@
 package com.zoothii.models
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
+@Entity(tableName = "games")
 open class Game(
 
-    @SerializedName("id")
+    @PrimaryKey
     val id: Int,
-    @SerializedName("name")
     val name: String,
-    @SerializedName("released")
     val released: String,
     @SerializedName("background_image")
     val backgroundImage: String,
-    @SerializedName("metacritic")
     val metacritic: Int,
-    @SerializedName("rating")
     val rating: Double,
     @SerializedName("rating_top")
     val ratingTop: Int,

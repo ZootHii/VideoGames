@@ -65,7 +65,8 @@ class VideoGamesViewModel @Inject constructor(private val repository: VideoGames
         }
     }
 
-    fun getLikedGameDetails() = repository.getAllLikedGameDetails()
+    fun getAllLikedGameDetails() = repository.getAllLikedGameDetails()
+    fun getAllGames() = repository.getAllGames()
 
 
     private val currentSearch = MutableLiveData(DEFAULT_SEARCH_TEXT)

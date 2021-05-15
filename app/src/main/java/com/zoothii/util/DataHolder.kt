@@ -9,13 +9,8 @@ class DataHolder {
         @Volatile
         private var instance: DataHolder? = null
 
-/*        fun getInstance() =
-            instance ?: synchronized(this) {
-                instance ?: DataHolder().also { instance = it }
-            }*/
-
         fun getInstance(): DataHolder {
-            val temp = DataHolder.instance
+            val temp = instance
             if (temp != null) {
                 return temp
             }
@@ -24,12 +19,8 @@ class DataHolder {
                 return instance as DataHolder
             }
         }
-
-
     }
 
-    var isSearching: Boolean = false
-    var gamesToRemove: ArrayList<Game> = ArrayList<Game>()
-
-
+    var gamesToSave = arrayListOf<Game>()
+    var gamesToRemove = arrayListOf<Game>()
 }

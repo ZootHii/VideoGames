@@ -8,7 +8,10 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.zoothii.adapters.LikedGamesAdapter
+import com.zoothii.models.Game
 import com.zoothii.models.GameDetails
+import com.zoothii.util.Helper.Companion.isNetworkAvailable
+import com.zoothii.util.Helper.Companion.makeSnackBar
 import com.zoothii.videogames.R
 import com.zoothii.videogames.databinding.FragmentFavoritesBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,8 +36,19 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
         getLikedGameDetails()
     }
 
+/*    private fun getLikedGameDetails() {
+        videoGamesViewModel.getAllLikedGameDetails()
+            .observe(viewLifecycleOwner, { gameDetailsList ->
+                likedGamesAdapter.setGames(gameDetailsList)
+                if (gameDetailsList.isEmpty()) {
+                    fragmentFavoritesBinding.favoritesNotFound.visibility = View.VISIBLE
+                }
+            })
+    }*/
+
+    // TODO TEST
     private fun getLikedGameDetails() {
-        videoGamesViewModel.getLikedGameDetails()
+        videoGamesViewModel.getAllGames()
             .observe(viewLifecycleOwner, { gameDetailsList ->
                 likedGamesAdapter.setGames(gameDetailsList)
                 if (gameDetailsList.isEmpty()) {
@@ -42,8 +56,34 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
                 }
             })
     }
-
+    // TODO TEST
     private fun setRecyclerView(favoritesRecyclerView: RecyclerView, view: View) {
+        recyclerView = favoritesRecyclerView.apply {
+            likedGamesAdapter =
+                LikedGamesAdapter { gameDetails ->
+                    onClickItem(view, gameDetails)
+                }
+            adapter = likedGamesAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+            setHasFixedSize(true)
+        }
+    }
+    // TODO TEST
+    private fun onClickItem(view: View, game: Game) {
+        if (isNetworkAvailable(requireContext())){
+            val action = FavoritesFragmentDirections.actionNavigationFavoritesToGameFragment(game.id)
+            Navigation.findNavController(view).navigate(action)
+        }
+        else{
+            makeSnackBar(view, getString(R.string.no_internet), true)
+                .setAction("OK") {}
+                .show()
+        }
+
+    }
+
+
+    /*private fun setRecyclerView(favoritesRecyclerView: RecyclerView, view: View) {
         recyclerView = favoritesRecyclerView.apply {
             likedGamesAdapter =
                 LikedGamesAdapter { gameDetails ->
@@ -56,7 +96,15 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
     }
 
     private fun onClickItem(view: View, game: GameDetails) {
-        val action = FavoritesFragmentDirections.actionNavigationFavoritesToGameFragment(game.id)
-        Navigation.findNavController(view).navigate(action)
-    }
+        if (isNetworkAvailable(requireContext())){
+            val action = FavoritesFragmentDirections.actionNavigationFavoritesToGameFragment(game.id)
+            Navigation.findNavController(view).navigate(action)
+        }
+        else{
+            makeSnackBar(view, getString(R.string.no_internet), true)
+                .setAction("OK") {}
+                .show()
+        }
+
+    }*/
 }

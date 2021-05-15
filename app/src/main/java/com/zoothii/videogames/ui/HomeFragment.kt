@@ -11,12 +11,14 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.zoothii.adapters.RecyclerViewAdapter
+import com.zoothii.adapters.GamesAdapter
 import com.zoothii.adapters.ViewPagerAdapter
 import com.zoothii.models.Game
+import com.zoothii.util.Constants.DEFAULT_START_SEARCH_TEXT_LENGTH
 import com.zoothii.util.Constants.DEFAULT_VIEW_PAGER_PAGE
 import com.zoothii.util.Constants.DEFAULT_VIEW_PAGER_PAGE_SIZE
 import com.zoothii.util.DataHolder
+import com.zoothii.util.Helper
 import com.zoothii.util.Helper.Companion.viewVisibility
 import com.zoothii.videogames.R
 import com.zoothii.videogames.databinding.FragmentHomeBinding
@@ -31,11 +33,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private lateinit var fragmentHomeBinding: FragmentHomeBinding
     private lateinit var games: ArrayList<Game>
     private lateinit var viewPagerAdapter: ViewPagerAdapter
-    private lateinit var recyclerViewAdapter: RecyclerViewAdapter
+    private lateinit var gamesAdapter: GamesAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewPager2: ViewPager2
     private lateinit var circleIndicator3: CircleIndicator3
-
+    private var canScrollToTop = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -48,24 +50,28 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
         setSearchView()
 
-        videoGamesViewModel.getGames(page = DEFAULT_VIEW_PAGER_PAGE,
-            pageSize = DEFAULT_VIEW_PAGER_PAGE_SIZE)
-            .observe(viewLifecycleOwner, { gamesResult ->
-                games = gamesResult.games as ArrayList<Game>
-                DataHolder.getInstance().gamesToRemove = games
-                viewPagerAdapter.setGames(games)
-                circleIndicator3.setViewPager(viewPager2)
-            })
+        if (Helper.isNetworkAvailable(requireContext())) {
+            videoGamesViewModel.getGames(page = DEFAULT_VIEW_PAGER_PAGE,
+                pageSize = DEFAULT_VIEW_PAGER_PAGE_SIZE)
+                .observe(viewLifecycleOwner, { pageResult ->
+                    games = pageResult.games as ArrayList<Game>
+                    DataHolder.getInstance().gamesToRemove = games
+                    viewPagerAdapter.setGames(games)
+                    circleIndicator3.setViewPager(viewPager2)
+                })
 
-        videoGamesViewModel.games.observe(viewLifecycleOwner) { pagingData ->
-            recyclerViewAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
+            videoGamesViewModel.games.observe(viewLifecycleOwner) { pagingDataGame ->
+                gamesAdapter.submitData(viewLifecycleOwner.lifecycle, pagingDataGame)
+            }
+        } else {
+            fragmentHomeBinding.homeNotFound.text = getString(R.string.no_internet)
         }
 
-        recyclerViewAdapter.addLoadStateListener { loadState ->
+        gamesAdapter.addLoadStateListener { loadState ->
             fragmentHomeBinding.apply {
                 homeNotFound.apply {
                     visibility =
-                        if (recyclerViewAdapter.itemCount < 1 && loadState.source.refresh is LoadState.NotLoading) {
+                        if (gamesAdapter.itemCount < 1 && loadState.source.refresh is LoadState.NotLoading) {
                             View.VISIBLE
                         } else {
                             View.GONE
@@ -93,6 +99,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
+                    canScrollToTop = true
+                    if (!newText.isNullOrBlank()) {
+                        canScrollToTop = false
+                        Log.d("response", "sssds")
+                    }
                     scrollToPositionTop()
                     searchBehaviour(newText)
                     return true
@@ -103,7 +114,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun searchBehaviour(newText: String?) {
         if (!newText.isNullOrEmpty()) {
-            if (newText.length >= 3) {
+            if (newText.length >= DEFAULT_START_SEARCH_TEXT_LENGTH) {
                 videoGamesViewModel.searchGames(newText)
                 viewVisibility(viewPager2, true)
                 viewVisibility(circleIndicator3, true)
@@ -114,15 +125,18 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             }
         } else {
             videoGamesViewModel.searchGames()
-            viewVisibility(viewPager2, true)
-            viewVisibility(circleIndicator3, true)
+            viewVisibility(viewPager2, false)
+            viewVisibility(circleIndicator3, false)
         }
     }
 
     private fun scrollToPositionTop() {
-        recyclerViewAdapter.addLoadStateListener { loadState ->
-            if (loadState.source.refresh is LoadState.NotLoading) {
+        gamesAdapter.addLoadStateListener { loadState ->
+            if (loadState.source.refresh is LoadState.NotLoading && !canScrollToTop) {
+                Log.d("response", "123")
+
                 fragmentHomeBinding.homeRecyclerView.scrollToPosition(0)
+                canScrollToTop = false
             }
         }
     }
@@ -143,12 +157,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun setRecyclerView(homeRecyclerView: RecyclerView, view: View) {
         recyclerView = homeRecyclerView.apply {
-            recyclerViewAdapter =
-                RecyclerViewAdapter { game ->
-                    Log.d("log game click", game.toString())
+            gamesAdapter =
+                GamesAdapter { game ->
                     onClickItem(view, game)
                 }
-            adapter = recyclerViewAdapter
+            adapter = gamesAdapter
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(true)
         }
