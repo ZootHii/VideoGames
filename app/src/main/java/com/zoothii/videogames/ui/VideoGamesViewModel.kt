@@ -42,6 +42,7 @@ class VideoGamesViewModel @Inject constructor(private val repository: VideoGames
         return mutableLiveData
     }
 
+    // log firebase analytics every open game details
     fun getGameDetails(id: Int): MutableLiveData<Game> {
         val mutableLiveData = MutableLiveData<Game>()
         val bundle = Bundle()
@@ -50,8 +51,7 @@ class VideoGamesViewModel @Inject constructor(private val repository: VideoGames
             if (response.isSuccessful) {
                 response.body()?.let { game ->
                     bundle.putParcelable("game_get_game_details", game)
-                    Helper.firebaseAnalytics.logEvent("open_game_detail"){
-                        //param("gameId", game.id.toLong())
+                    Helper.firebaseAnalytics.logEvent("open_game_detail") {
                         param("game_get_game_details", bundle)
                     }
 
@@ -64,18 +64,16 @@ class VideoGamesViewModel @Inject constructor(private val repository: VideoGames
         return mutableLiveData
     }
 
+    // log firebase analytics remove and add favorite game
     fun addGame(game: Game) {
         val bundle = Bundle()
         bundle.putParcelable("game_add_game", game)
-        if (game.favorite == 1){
-            Helper.firebaseAnalytics.logEvent("add_favorite"){
-                //param("gameId", game.id.toLong())
+        if (game.favorite == 1) {
+            Helper.firebaseAnalytics.logEvent("add_favorite") {
                 param("game_add_game", bundle)
             }
-        }
-        else {
-            Helper.firebaseAnalytics.logEvent("delete_favorite"){
-                //param("gameId", game.id.toLong())
+        } else {
+            Helper.firebaseAnalytics.logEvent("delete_favorite") {
                 param("game_add_game", bundle)
             }
         }
@@ -85,19 +83,11 @@ class VideoGamesViewModel @Inject constructor(private val repository: VideoGames
         }
     }
 
-    //fun getAllFavoriteGames() = repository.getAllFavoriteGames()
-    //fun getAllFavoriteGames2(searchGameName: String? = "%%") = repository.getAllFavoriteGames2(searchGameName)
-
-
-    fun getGamesDatabase() = repository.getGamesDatabase()
-
-    //val gamesDatabase2 = repository.getGamesDatabase()
-
     fun isFavoriteGame(gameId: Int) = repository.isFavoriteGame(gameId)
 
-    fun deleteNonFavoriteGames() = viewModelScope.launch { repository.deleteNonFavoriteGames() }
+    //fun deleteNonFavoriteGames() = viewModelScope.launch { repository.deleteNonFavoriteGames() }
 
-    //val deleteNonFavorites = viewModelScope.launch { repository.deleteNonFavoriteGames() }
+    //fun getGamesDatabase() = repository.getGamesDatabase() // get all games that added from pageSource
 
 
     // Search games from api

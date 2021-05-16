@@ -8,9 +8,6 @@ import com.zoothii.data.database.VideoGamesDao
 import com.zoothii.data.models.Game
 import com.zoothii.util.Constants.DEFAULT_START_PAGE
 import com.zoothii.util.DataHolder
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
 

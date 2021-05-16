@@ -59,12 +59,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         if (Helper.isNetworkAvailable(requireContext())) {
             videoGamesViewModel.getGamesApi(page = DEFAULT_VIEW_PAGER_PAGE,
                 pageSize = DEFAULT_VIEW_PAGER_PAGE_SIZE)
-                .observe(viewLifecycleOwner, { pageResult ->
+                .observe(viewLifecycleOwner) { pageResult ->
                     games = pageResult.games as ArrayList<Game>
                     DataHolder.getInstance().gamesToRemove = games
                     viewPagerAdapter.setGames(games)
                     circleIndicator3.setViewPager(viewPager2)
-                })
+                }
 
             videoGamesViewModel.games.observe(viewLifecycleOwner) { pagingDataGame ->
                 gamesAdapter.submitData(viewLifecycleOwner.lifecycle, pagingDataGame)

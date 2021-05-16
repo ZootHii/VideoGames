@@ -53,6 +53,5 @@ class Helper {
             }
             return false
         }
-
     }
 }

@@ -28,11 +28,3 @@ interface VideoGamesDao {
     @Query("SELECT * FROM games WHERE favorite = 1 AND REPLACE(name, ' ', '') LIKE REPLACE('%'||:searchGameName||'%', ' ', '') ORDER BY name DESC")
     fun getFavoriteGames(searchGameName: String?): LiveData<List<Game>>
 }
-
-
-/*    //@Query("SELECT * FROM games WHERE name LIKE '%'||:gameName||'%'")
-    @Query("SELECT * FROM games WHERE name = :gameName")
-    fun searchGamesByGameName(gameName: String? = ""): LiveData<List<Game>>*/
-
-/*    @Query("SELECT * FROM liked_games")
-    fun getAllFavoriteGames(): LiveData<List<Game>>*/

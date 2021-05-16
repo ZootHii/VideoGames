@@ -14,7 +14,6 @@ class VideoGamesRepository(
     private val api: VideoGamesApi,
     private val videoGamesDao: VideoGamesDao,
 ) {
-
     // api s
     fun getGamesPagingApi(search: String?) =
         Pager(
@@ -42,12 +41,4 @@ class VideoGamesRepository(
     fun getFavoriteGames(searchGameName: String?) = videoGamesDao.getFavoriteGames(searchGameName)
 
     fun isFavoriteGame(gameId: Int) = videoGamesDao.isFavoriteGame(gameId)
-
-
-    //fun searchGamesByGameName(gameName: String) = videoGamesDao.searchGamesByGameName(gameName)
-
-    /*    suspend fun deleteLikedGameDetails(game: Game) =
-            videoGamesDao.deleteLikedGameDetails(game)*/
-
-    //fun getAllFavoriteGames() = videoGamesDao.getAllFavoriteGames()
 }

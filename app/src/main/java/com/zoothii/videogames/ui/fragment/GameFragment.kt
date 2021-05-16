@@ -28,7 +28,7 @@ class GameFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //retainInstance = true
+
         (requireActivity() as MainActivity).hideNavigationBar()
 
         fragmentGameBinding = FragmentGameBinding.bind(view)
@@ -37,14 +37,13 @@ class GameFragment :
             gameId = it.getInt("game_id")
         }
 
-
         fragmentGameBinding.progressBarGame.visibility = View.VISIBLE
         setGameDetails()
         navigationBarControlWithBackButton()
     }
 
     private fun setGameDetails() {
-        videoGamesViewModel.getGameDetails(gameId).observe(viewLifecycleOwner, { gameDetails ->
+        videoGamesViewModel.getGameDetails(gameId).observe(viewLifecycleOwner) { gameDetails ->
             fragmentGameBinding.apply {
                 val releasedAt = "Released at ${gameDetails.released}"
                 val metaCriticRate = "Metacritic Rate ${gameDetails.metacritic}"
@@ -71,12 +70,12 @@ class GameFragment :
                     buttonBehaviour(gameDetails)
                 }
             }
-        })
+        }
     }
 
     private fun buttonBehaviour(game: Game) {
         videoGamesViewModel.isFavoriteGame(gameId)
-            .observe(viewLifecycleOwner, { gameList ->
+            .observe(viewLifecycleOwner) { gameList ->
                 if (gameList.isNullOrEmpty() || gameList[0].id != game.id) {
                     fragmentGameBinding.apply {
                         gameAddLikedButton.apply {
@@ -104,7 +103,7 @@ class GameFragment :
                         }
                     }
                 }
-            })
+            }
     }
 
     private fun onClickWebsite(website: String) {

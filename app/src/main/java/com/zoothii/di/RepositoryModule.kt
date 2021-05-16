@@ -1,8 +1,8 @@
 package com.zoothii.di
 
+import com.zoothii.data.api.VideoGamesApi
 import com.zoothii.data.database.VideoGamesDao
 import com.zoothii.data.database.VideoGamesDatabase
-import com.zoothii.data.api.VideoGamesApi
 import com.zoothii.repository.VideoGamesRepository
 import dagger.Module
 import dagger.Provides
@@ -18,7 +18,7 @@ object RepositoryModule {
     @Provides
     fun provideVideoGamesRepository(
         videoGamesApi: VideoGamesApi,
-        videoGamesDao: VideoGamesDao
+        videoGamesDao: VideoGamesDao,
     ): VideoGamesRepository {
         return VideoGamesRepository(videoGamesApi, videoGamesDao)
     }
@@ -27,5 +27,4 @@ object RepositoryModule {
     @Provides
     fun provideLikedGameDetailsDao(videoGamesDatabase: VideoGamesDatabase) =
         videoGamesDatabase.likedGameDetailsDao()
-
 }

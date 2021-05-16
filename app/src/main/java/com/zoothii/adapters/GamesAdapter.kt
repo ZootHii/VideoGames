@@ -1,6 +1,5 @@
 package com.zoothii.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,8 +38,6 @@ class GamesAdapter(
         }
     }
 
-
-
     inner class RecyclerViewViewHolder(
         private val itemRecyclerViewBinding: ItemRecyclerViewBinding,
     ) : RecyclerView.ViewHolder(
@@ -58,7 +55,7 @@ class GamesAdapter(
             }
         }
 
-        fun setMarquee(){
+        fun setMarquee() {
             itemRecyclerViewBinding.gameName.isSelected = true
         }
 

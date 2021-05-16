@@ -2,7 +2,6 @@ package com.zoothii.util
 
 import com.zoothii.data.models.Game
 
-
 class DataHolder {
 
     companion object {
@@ -21,6 +20,5 @@ class DataHolder {
         }
     }
 
-    var gamesToSave = arrayListOf<Game>()
-    var gamesToRemove = arrayListOf<Game>()
+    var gamesToRemove = arrayListOf<Game>() // for view pager first items
 }

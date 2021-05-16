@@ -1,7 +1,6 @@
 package com.zoothii.videogames.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
@@ -36,19 +35,16 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
             setRecyclerView(favoritesRecyclerView, view)
         }
 
-        videoGamesViewModel.getGamesDatabase().observe(viewLifecycleOwner) { game ->
-            Log.d("response size all fav", game.size.toString())
-            /*game.forEach {
-                Log.d("response ALL GAMES",
-                    "ID:${it.id}- NAME:${it.name}- FAV:${it.favorite}- WEB:${it.website} ")
-            }*/
-        }
+//        videoGamesViewModel.getGamesDatabase().observe(viewLifecycleOwner) { game ->
+//            Log.d("response size all games added from page", game.size.toString())
+//            /*game.forEach {
+//                Log.d("response ALL GAMES",
+//                    "ID:${it.id}- NAME:${it.name}- FAV:${it.favorite}- WEB:${it.website} ")
+//            }*/
+//        }
         setSearchView()
 
         getFavoriteGames()
-
-        Log.d("response recyc is sqhon", recyclerView.isShown.toString())
-
     }
 
     private fun setRecyclerView(favoritesRecyclerView: RecyclerView, view: View) {
@@ -74,7 +70,6 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
                 .show()
         }
     }
-
 
     private fun getFavoriteGames() {
         videoGamesViewModel.favoriteGames

@@ -23,10 +23,3 @@ data class Game(
     @ColumnInfo(name = "favorite")
     var favorite: Int = 0,
 ) : Parcelable
-
-
-
-/*@SerializedName("rating_top")
-    val ratingTop: Int,
-    @SerializedName("ratings_count")
-    val ratingsCount: Int,*/

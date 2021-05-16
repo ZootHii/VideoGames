@@ -62,7 +62,7 @@ class FavoriteGamesAdapter(
             }
         }
 
-        fun setMarquee(){
+        fun setMarquee() {
             itemRecyclerViewBinding.gameName.isSelected = true
         }
     }

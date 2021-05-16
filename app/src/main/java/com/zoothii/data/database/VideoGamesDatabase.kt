@@ -9,6 +9,7 @@ import com.zoothii.data.models.Game
 @Database(entities = [Game::class], version = 1, exportSchema = false)
 abstract class VideoGamesDatabase : RoomDatabase() {
     abstract fun likedGameDetailsDao(): VideoGamesDao
+
     companion object {
         @Volatile
         private var instance: VideoGamesDatabase? = null

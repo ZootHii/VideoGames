@@ -2,9 +2,6 @@ package com.zoothii.data.api
 
 import com.zoothii.data.models.Game
 import com.zoothii.data.models.PageResult
-import com.zoothii.util.Constants.DEFAULT_PAGE
-import com.zoothii.util.Constants.DEFAULT_PAGE_SIZE
-import com.zoothii.util.Constants.DEFAULT_SEARCH_TEXT
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path

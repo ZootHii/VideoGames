@@ -1,7 +1,6 @@
 package com.zoothii.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.Nullable
 import androidx.recyclerview.widget.RecyclerView
