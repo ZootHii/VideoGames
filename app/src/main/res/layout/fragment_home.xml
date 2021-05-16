@@ -6,16 +6,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginBottom="50dp"
-    tools:context=".ui.HomeFragment">
+    tools:context=".ui.fragment.HomeFragment">
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/home_search_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
-        android:background="@drawable/rounded_border"
+        android:background="@drawable/item_border"
+        app:closeIcon="@drawable/ic_delete"
         app:iconifiedByDefault="false"
-        app:queryHint="Search games" />
+        app:queryHint="Search games"
+        app:searchIcon="@drawable/ic_search" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/home_view_pager"
@@ -23,17 +25,15 @@
         android:layout_height="216dp"
         android:layout_below="@id/home_search_view"
         android:layout_centerHorizontal="true"
-        android:orientation="horizontal">
-
-    </androidx.viewpager2.widget.ViewPager2>
+        android:orientation="horizontal" />
 
     <me.relex.circleindicator.CircleIndicator3
         android:id="@+id/home_circle_indicator"
         android:layout_width="match_parent"
-        android:layout_marginTop="2dp"
         android:layout_height="12dp"
         android:layout_below="@+id/home_view_pager"
         android:layout_alignParentStart="true"
+        android:layout_marginTop="2dp"
         app:ci_drawable="@drawable/circle_indicator_drawable" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -41,10 +41,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/home_circle_indicator"
-        android:background="@color/white"
         android:clipToPadding="false"
-        android:paddingEnd="4dp"
         android:paddingStart="4dp"
+        android:paddingEnd="4dp"
         android:paddingBottom="4dp"
         tools:listitem="@layout/item_recycler_view">
 
@@ -66,8 +65,8 @@
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
         android:layout_centerInParent="true"
+        android:layout_marginTop="50dp"
         android:indeterminateTint="@color/purple_700"
         android:visibility="gone"
         tools:visibility="visible" />

@@ -6,15 +6,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginBottom="50dp"
-    tools:context=".ui.FavoritesFragment">
+    tools:context=".ui.fragment.FavoritesFragment">
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/favorites_search_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
-        android:background="@drawable/rounded_border"
+        android:background="@drawable/item_border"
         app:iconifiedByDefault="false"
+        app:searchIcon="@drawable/ic_search"
+        app:closeIcon="@drawable/ic_delete"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -40,8 +42,9 @@
         android:layout_width="280dp"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="@string/favorites_not_found"
+        android:text="@string/favorites_empty"
         android:textSize="24sp"
+        android:layout_marginBottom="50dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

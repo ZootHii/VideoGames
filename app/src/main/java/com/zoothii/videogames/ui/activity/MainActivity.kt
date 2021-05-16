@@ -1,17 +1,21 @@
-package com.zoothii.videogames
+package com.zoothii.videogames.ui.activity
 
 import android.os.Bundle
 import android.view.View
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.zoothii.videogames.R
+import com.zoothii.videogames.ui.VideoGamesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var navView: BottomNavigationView
+    private val videoGamesViewModel: VideoGamesViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,11 +33,18 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun hideNavigationBar(){
+
+    override fun onStop() {
+        super.onStop()
+        videoGamesViewModel.deleteNonFavoriteGames() // delete data saved for search
+
+    }
+
+    fun hideNavigationBar() {
         navView.visibility = View.GONE
     }
 
-    fun showNavigationBar(){
+    fun showNavigationBar() {
         navView.visibility = View.VISIBLE
     }
 }

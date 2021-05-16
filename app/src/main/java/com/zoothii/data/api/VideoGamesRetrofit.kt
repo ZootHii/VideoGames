@@ -1,4 +1,4 @@
-package com.zoothii.remote
+package com.zoothii.data.api
 
 import com.zoothii.util.Constants.API_KEY
 import com.zoothii.util.Constants.BASE_URL
@@ -7,7 +7,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-object RetrofitService {
+object VideoGamesRetrofit {
 
     private val requestInterceptor = Interceptor { chain ->
         val url = chain.request()
@@ -34,7 +34,7 @@ object RetrofitService {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    fun <T> buildService(service: Class<T>): T {
-        return retrofit.create(service)
+    fun <T> buildApi(api: Class<T>): T {
+        return retrofit.create(api)
     }
 }

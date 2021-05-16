@@ -20,13 +20,12 @@
             android:id="@+id/image_game_background"
             android:layout_width="384dp"
             android:layout_height="216dp"
-            android:clickable="true"
-            android:focusable="true"
             android:scaleType="fitXY"
             android:src="@drawable/ic_launcher_background">
-
         </ImageView>
+
     </androidx.cardview.widget.CardView>
+
 
 
 </RelativeLayout>

@@ -1,17 +1,21 @@
 package com.zoothii.videogames.ui
 
+import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
-import com.zoothii.models.Game
-import com.zoothii.models.PageResult
-import com.zoothii.repositories.VideoGamesRepository
+import com.google.firebase.analytics.ktx.logEvent
+import com.zoothii.data.models.Game
+import com.zoothii.data.models.PageResult
+import com.zoothii.repository.VideoGamesRepository
+import com.zoothii.util.Constants.DEFAULT_PAGE
+import com.zoothii.util.Constants.DEFAULT_PAGE_SIZE
 import com.zoothii.util.Constants.DEFAULT_SEARCH_TEXT
+import com.zoothii.util.Helper
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,17 +23,17 @@ import javax.inject.Inject
 class VideoGamesViewModel @Inject constructor(private val repository: VideoGamesRepository) :
     ViewModel() {
 
-    fun getGames(
-        page: Int? = null,
-        search: String? = null,
-        pageSize: Int? = null,
+    fun getGamesApi(
+        page: Int? = DEFAULT_PAGE,
+        search: String? = DEFAULT_SEARCH_TEXT,
+        pageSize: Int? = DEFAULT_PAGE_SIZE,
     ): MutableLiveData<PageResult> {
         val mutableLiveData = MutableLiveData<PageResult>()
-        viewModelScope.launch(Dispatchers.IO) {
-            val response = repository.getGames(page, search, pageSize)
+        viewModelScope.launch {
+            val response = repository.getGamesApi(page, search, pageSize)
             if (response.isSuccessful) {
-                response.body()?.let {
-                    mutableLiveData.postValue(response.body())
+                response.body()?.let { pageResult ->
+                    mutableLiveData.postValue(pageResult)
                 }
             } else {
                 Log.d("Error", "error")
@@ -40,11 +44,18 @@ class VideoGamesViewModel @Inject constructor(private val repository: VideoGames
 
     fun getGameDetails(id: Int): MutableLiveData<Game> {
         val mutableLiveData = MutableLiveData<Game>()
-        viewModelScope.launch(Dispatchers.IO) {
+        val bundle = Bundle()
+        viewModelScope.launch {
             val response = repository.getGameDetails(id)
             if (response.isSuccessful) {
-                response.body()?.let {
-                    mutableLiveData.postValue(response.body())
+                response.body()?.let { game ->
+                    bundle.putParcelable("game_get_game_details", game)
+                    Helper.firebaseAnalytics.logEvent("open_game_detail"){
+                        //param("gameId", game.id.toLong())
+                        param("game_get_game_details", bundle)
+                    }
+
+                    mutableLiveData.postValue(game)
                 }
             } else {
                 Log.d("Error", "error")
@@ -54,6 +65,21 @@ class VideoGamesViewModel @Inject constructor(private val repository: VideoGames
     }
 
     fun addGame(game: Game) {
+        val bundle = Bundle()
+        bundle.putParcelable("game_add_game", game)
+        if (game.favorite == 1){
+            Helper.firebaseAnalytics.logEvent("add_favorite"){
+                //param("gameId", game.id.toLong())
+                param("game_add_game", bundle)
+            }
+        }
+        else {
+            Helper.firebaseAnalytics.logEvent("delete_favorite"){
+                //param("gameId", game.id.toLong())
+                param("game_add_game", bundle)
+            }
+        }
+
         viewModelScope.launch {
             repository.addGame(game)
         }
@@ -63,28 +89,36 @@ class VideoGamesViewModel @Inject constructor(private val repository: VideoGames
     //fun getAllFavoriteGames2(searchGameName: String? = "%%") = repository.getAllFavoriteGames2(searchGameName)
 
 
-    fun getAllGames() = repository.getAllGames()
-    fun checkIfGameIsInFavorites(gameId: Int) = repository.checkIfGameIsInFavorites(gameId)
+    fun getGamesDatabase() = repository.getGamesDatabase()
+
+    //val gamesDatabase2 = repository.getGamesDatabase()
+
+    fun isFavoriteGame(gameId: Int) = repository.isFavoriteGame(gameId)
+
     fun deleteNonFavoriteGames() = viewModelScope.launch { repository.deleteNonFavoriteGames() }
 
+    //val deleteNonFavorites = viewModelScope.launch { repository.deleteNonFavoriteGames() }
 
 
     // Search games from api
     private val currentSearch = MutableLiveData(DEFAULT_SEARCH_TEXT)
     val games = currentSearch.switchMap { searchString ->
-        repository.getGamesPaging(searchString).cachedIn(viewModelScope)
+        repository.getGamesPagingApi(searchString).cachedIn(viewModelScope)
     }
+
     fun searchGames(search: String? = DEFAULT_SEARCH_TEXT) {
         currentSearch.value = search
     }
 
+    val allFavoriteGames = repository.getFavoriteGames(DEFAULT_SEARCH_TEXT)
+
     // Search favorites from database room
-    private val currentSearchDao = MutableLiveData("%%")
+    private val currentSearchDao = MutableLiveData(DEFAULT_SEARCH_TEXT)
     val favoriteGames = currentSearchDao.switchMap { searchString ->
-        repository.getAllFavoriteGames2(searchString)
-    }
-    fun searchFavoriteGames(search: String? = "%%") {
-        currentSearchDao.value = search
+        repository.getFavoriteGames(searchString)
     }
 
+    fun searchFavoriteGames(search: String? = DEFAULT_SEARCH_TEXT) {
+        currentSearchDao.value = search
+    }
 }

@@ -1,7 +1,7 @@
 package com.zoothii.di
 
-import com.zoothii.remote.VideoGamesApi
-import com.zoothii.remote.RetrofitService
+import com.zoothii.data.api.VideoGamesApi
+import com.zoothii.data.api.VideoGamesRetrofit
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,7 +15,7 @@ object ApiModule {
     @Provides
     fun provideVideoGamesApi(): VideoGamesApi {
         val service: VideoGamesApi by lazy {
-            RetrofitService.buildService(VideoGamesApi::class.java)
+            VideoGamesRetrofit.buildApi(VideoGamesApi::class.java)
         }
         return service
     }

@@ -1,9 +1,9 @@
 package com.zoothii.di
 
-import com.zoothii.database.VideoGamesDao
-import com.zoothii.database.VideoGamesDatabase
-import com.zoothii.remote.VideoGamesApi
-import com.zoothii.repositories.VideoGamesRepository
+import com.zoothii.data.database.VideoGamesDao
+import com.zoothii.data.database.VideoGamesDatabase
+import com.zoothii.data.api.VideoGamesApi
+import com.zoothii.repository.VideoGamesRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

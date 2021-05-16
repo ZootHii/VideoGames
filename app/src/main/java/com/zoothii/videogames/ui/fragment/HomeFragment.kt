@@ -1,4 +1,4 @@
-package com.zoothii.videogames.ui
+package com.zoothii.videogames.ui.fragment
 
 import android.os.Bundle
 import android.util.Log
@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.zoothii.adapters.GamesAdapter
 import com.zoothii.adapters.ViewPagerAdapter
-import com.zoothii.models.Game
+import com.zoothii.data.models.Game
 import com.zoothii.util.Constants.DEFAULT_START_SEARCH_TEXT_LENGTH
 import com.zoothii.util.Constants.DEFAULT_VIEW_PAGER_PAGE
 import com.zoothii.util.Constants.DEFAULT_VIEW_PAGER_PAGE_SIZE
@@ -22,6 +22,7 @@ import com.zoothii.util.Helper
 import com.zoothii.util.Helper.Companion.viewVisibility
 import com.zoothii.videogames.R
 import com.zoothii.videogames.databinding.FragmentHomeBinding
+import com.zoothii.videogames.ui.VideoGamesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import me.relex.circleindicator.CircleIndicator3
 
@@ -43,15 +44,20 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         super.onViewCreated(view, savedInstanceState)
 
         fragmentHomeBinding = FragmentHomeBinding.bind(view)
-
         fragmentHomeBinding.apply {
             setViewPagerAndCircleIndicator(homeViewPager, homeCircleIndicator, view)
             setRecyclerView(homeRecyclerView, view)
         }
-        setSearchView()
 
+        setSearchView()
+        setGames()
+        loadStateVisibilityControl()
+
+    }
+
+    private fun setGames() {
         if (Helper.isNetworkAvailable(requireContext())) {
-            videoGamesViewModel.getGames(page = DEFAULT_VIEW_PAGER_PAGE,
+            videoGamesViewModel.getGamesApi(page = DEFAULT_VIEW_PAGER_PAGE,
                 pageSize = DEFAULT_VIEW_PAGER_PAGE_SIZE)
                 .observe(viewLifecycleOwner, { pageResult ->
                     games = pageResult.games as ArrayList<Game>
@@ -66,7 +72,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         } else {
             fragmentHomeBinding.homeNotFound.text = getString(R.string.no_internet)
         }
+    }
 
+    private fun loadStateVisibilityControl() {
         gamesAdapter.addLoadStateListener { loadState ->
             fragmentHomeBinding.apply {
                 homeNotFound.apply {
@@ -77,7 +85,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                             View.GONE
                         }
                 }
-
                 progressBarHome.apply {
                     visibility =
                         if (loadState.source.refresh is LoadState.Loading) {
@@ -101,9 +108,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 override fun onQueryTextChange(newText: String?): Boolean {
                     canScrollToTop = true
                     if (!newText.isNullOrBlank()) {
-                        canScrollToTop = false
+                        canScrollToTop = true
+                        Log.d("scroll !isNullOrBlank", "not here $canScrollToTop")
+                    } else {
+                        scrollToPositionTop()
+                        Log.d("scroll isNullOrBlank", "here can $canScrollToTop")
                     }
-                    scrollToPositionTop()
                     searchBehaviour(newText)
                     return true
                 }
@@ -132,6 +142,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun scrollToPositionTop() {
         gamesAdapter.addLoadStateListener { loadState ->
             if (loadState.source.refresh is LoadState.NotLoading && !canScrollToTop) {
+                Log.d("scroll isNullOrBlank", "wtf can $canScrollToTop")
                 fragmentHomeBinding.homeRecyclerView.scrollToPosition(0)
                 canScrollToTop = false
             }

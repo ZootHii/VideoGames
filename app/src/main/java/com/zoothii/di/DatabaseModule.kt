@@ -1,7 +1,7 @@
 package com.zoothii.di
 
 import android.content.Context
-import com.zoothii.database.VideoGamesDatabase
+import com.zoothii.data.database.VideoGamesDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

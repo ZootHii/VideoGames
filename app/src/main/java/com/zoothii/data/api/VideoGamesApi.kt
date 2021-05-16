@@ -1,7 +1,7 @@
-package com.zoothii.remote
+package com.zoothii.data.api
 
-import com.zoothii.models.Game
-import com.zoothii.models.PageResult
+import com.zoothii.data.models.Game
+import com.zoothii.data.models.PageResult
 import com.zoothii.util.Constants.DEFAULT_PAGE
 import com.zoothii.util.Constants.DEFAULT_PAGE_SIZE
 import com.zoothii.util.Constants.DEFAULT_SEARCH_TEXT
@@ -14,12 +14,11 @@ interface VideoGamesApi {
 
     @GET("games")
     suspend fun getGames(
-        @Query("page") page: Int? = DEFAULT_PAGE,
-        @Query("search") search: String? = DEFAULT_SEARCH_TEXT,
-        @Query("page_size") pageSize: Int? = DEFAULT_PAGE_SIZE,
+        @Query("page") page: Int?,
+        @Query("search") search: String?,
+        @Query("page_size") pageSize: Int?,
     ): Response<PageResult>
 
     @GET("games/{id}")
     suspend fun getGameDetail(@Path("id") id: Int): Response<Game>
-
 }

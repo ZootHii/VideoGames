@@ -1,11 +1,12 @@
 package com.zoothii.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.Nullable
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.zoothii.models.Game
+import com.zoothii.data.models.Game
 import com.zoothii.videogames.databinding.ItemViewPagerBinding
 
 
@@ -26,9 +27,10 @@ class ViewPagerAdapter(
 
     override fun onBindViewHolder(holder: ViewPagerViewHolder, position: Int) {
         val currentGame: Game = games[position]
-        holder.bindItems(currentGame)
+        holder.bind(currentGame)
         if (clickListener != null) {
             holder.itemView.setOnClickListener { clickListener.invoke(currentGame) }
+
         }
     }
 
@@ -36,18 +38,19 @@ class ViewPagerAdapter(
         return games.size
     }
 
-    fun setGames(gamesGame: List<Game>) {
-        this.games = gamesGame
+    fun setGames(games: List<Game>) {
+        this.games = games
         this.notifyDataSetChanged()
     }
 
     inner class ViewPagerViewHolder(
         private val itemViewPagerBinding: ItemViewPagerBinding,
-    ) : RecyclerView.ViewHolder(
+
+        ) : RecyclerView.ViewHolder(
         itemViewPagerBinding.root
     ) {
 
-        fun bindItems(currentGame: Game) {
+        fun bind(currentGame: Game) {
             itemViewPagerBinding.imageGameBackground.load(currentGame.backgroundImage)
         }
     }

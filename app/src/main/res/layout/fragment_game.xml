@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.GameFragment">
+    tools:context=".ui.fragment.GameFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
@@ -49,10 +49,11 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:maxLines="1"
+                android:maxLines="2"
                 android:textAlignment="textStart"
-                android:textColor="#000000"
-                android:textSize="23sp"
+                android:textColor="#142278"
+                android:textSize="20sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -66,7 +67,8 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:textAlignment="textStart"
-                android:textSize="15sp"
+                android:textColor="#8463CF"
+                android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/game_name"
@@ -79,7 +81,8 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:textAlignment="textStart"
-                android:textSize="15sp"
+                android:textColor="#8463CF"
+                android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/game_released"
@@ -89,15 +92,15 @@
                 android:id="@+id/game_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:textColor="@color/black"
-                android:textSize="18sp"
+                android:textSize="17sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/game_meta_critic"
-                tools:text="game\ndescription\ngame\ndescription"/>
+                tools:text="game\ndescription\ngame\ndescription" />
 
             <TextView
                 android:id="@+id/game_website"
@@ -105,15 +108,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="4dp"
-                android:layout_marginBottom="8dp"
                 android:layout_marginEnd="16dp"
-                android:textColor="@color/black"
-                android:textSize="15sp"
+                android:layout_marginBottom="8dp"
                 android:gravity="center"
+                android:textColor="@color/purple_700"
+                android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/game_description"
-                tools:text="website"/>
+                tools:text="website" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -132,6 +135,8 @@
         app:fabSize="normal"
         app:layout_anchor="@id/appbar"
         app:layout_anchorGravity="end|bottom"
+        app:maxImageSize="40dp"
+        app:tint="@null"
         tools:src="@drawable/ic_add_favorite"
         tools:visibility="visible" />
 

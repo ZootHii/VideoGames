@@ -3,8 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="135dp"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_margin="2dp"
-    android:background="@drawable/rounded_border">
+    android:background="@drawable/item_border">
 
 
     <androidx.cardview.widget.CardView
@@ -26,17 +27,20 @@
             app:srcCompat="@drawable/ic_launcher_background" />
     </androidx.cardview.widget.CardView>
 
-
     <TextView
         android:id="@+id/game_name"
-        android:layout_width="210dp"
+        android:layout_width="215dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:maxLines="2"
-        android:text="Grand Theft Auto V: EightBorn V"
+        android:layout_marginTop="18dp"
+        android:singleLine="true"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
+        android:ellipsize="marquee"
+        tools:text="Grand Theft Auto V: Grand Theft\n Auto V  Grand Theft\n Auto V  Grand Theft\n Auto V"
         android:textAlignment="center"
-        android:textColor="#000000"
-        android:textSize="24sp"
+        android:textColor="#142278"
+        android:textSize="23sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/card_view"
         app:layout_constraintTop_toTopOf="parent" />
@@ -45,10 +49,11 @@
         android:id="@+id/game_rating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="104dp"
-        android:text="Rating 4.48"
+        android:layout_marginTop="100dp"
+        tools:text="Rating 4.48"
         android:textAlignment="textStart"
-        android:textSize="16sp"
+        android:textSize="15sp"
+        android:textColor="#8463CF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/card_view"
         app:layout_constraintTop_toTopOf="parent" />
@@ -57,10 +62,11 @@
         android:id="@+id/game_released"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="74dp"
-        android:text="Released at 2013-09-17"
+        android:layout_marginTop="75dp"
+        tools:text="Released at 2013-09-17"
         android:textAlignment="textStart"
-        android:textSize="18sp"
+        android:textColor="#8463CF"
+        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/card_view"
         app:layout_constraintTop_toTopOf="parent" />

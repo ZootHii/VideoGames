@@ -1,4 +1,4 @@
-package com.zoothii.models
+package com.zoothii.data.models
 
 
 import com.google.gson.annotations.SerializedName

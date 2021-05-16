@@ -1,47 +1,51 @@
 package com.zoothii.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.Nullable
-import androidx.paging.PagingDataAdapter
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.zoothii.data.models.Game
 import com.zoothii.videogames.databinding.ItemRecyclerViewBinding
 
-class GamesAdapter(
+class FavoriteGamesAdapter(
     @Nullable private val clickListener: ((Game) -> Unit)? = null,
-) : PagingDataAdapter<Game, GamesAdapter.RecyclerViewViewHolder>(GAME_COMPARATOR) {
+) : RecyclerView.Adapter<FavoriteGamesAdapter.LikedGamesViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerViewViewHolder {
+    private var games: List<Game> = ArrayList()
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LikedGamesViewHolder {
 
         val itemRecyclerViewBinding = ItemRecyclerViewBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
         )
-        return RecyclerViewViewHolder(itemRecyclerViewBinding)
+        return LikedGamesViewHolder(itemRecyclerViewBinding)
     }
 
-    override fun onBindViewHolder(holder: RecyclerViewViewHolder, position: Int) {
-        val currentItem = getItem(position)
-        if (currentItem != null) {
-            holder.bind(currentItem)
-            if (clickListener != null) {
-                holder.itemView.setOnClickListener { clickListener.invoke(currentItem) }
-            }
-            if (holder.itemView.visibility == View.VISIBLE) {
-                holder.setMarquee()
-            }
+    override fun onBindViewHolder(holder: LikedGamesViewHolder, position: Int) {
+        val currentGame: Game = games[position]
+        holder.bind(currentGame)
+        if (clickListener != null) {
+            holder.itemView.setOnClickListener { clickListener.invoke(currentGame) }
+        }
+        if (holder.itemView.visibility == View.VISIBLE) {
+            holder.setMarquee()
         }
     }
 
+    override fun getItemCount(): Int {
+        return games.size
+    }
 
+    fun setGames(games: List<Game>) {
+        this.games = games
+        this.notifyDataSetChanged()
+    }
 
-    inner class RecyclerViewViewHolder(
+    inner class LikedGamesViewHolder(
         private val itemRecyclerViewBinding: ItemRecyclerViewBinding,
     ) : RecyclerView.ViewHolder(
         itemRecyclerViewBinding.root
@@ -60,17 +64,6 @@ class GamesAdapter(
 
         fun setMarquee(){
             itemRecyclerViewBinding.gameName.isSelected = true
-        }
-
-    }
-
-    companion object {
-        private val GAME_COMPARATOR = object : DiffUtil.ItemCallback<Game>() {
-            override fun areItemsTheSame(oldItem: Game, newItem: Game) =
-                oldItem.id == newItem.id
-
-            override fun areContentsTheSame(oldItem: Game, newItem: Game) =
-                oldItem.backgroundImage == newItem.backgroundImage
         }
     }
 }

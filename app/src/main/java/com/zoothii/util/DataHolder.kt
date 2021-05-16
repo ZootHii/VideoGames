@@ -1,6 +1,6 @@
 package com.zoothii.util
 
-import com.zoothii.models.Game
+import com.zoothii.data.models.Game
 
 
 class DataHolder {

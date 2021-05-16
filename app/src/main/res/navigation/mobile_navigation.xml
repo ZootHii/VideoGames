@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.zoothii.videogames.ui.HomeFragment"
+        android:name="com.zoothii.videogames.ui.fragment.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/navigation_favorites"
-        android:name="com.zoothii.videogames.ui.FavoritesFragment"
+        android:name="com.zoothii.videogames.ui.fragment.FavoritesFragment"
         android:label="@string/title_favorites"
         tools:layout="@layout/fragment_favorites" >
         <action
@@ -26,7 +26,7 @@
     </fragment>
     <fragment
         android:id="@+id/gameFragment"
-        android:name="com.zoothii.videogames.ui.GameFragment"
+        android:name="com.zoothii.videogames.ui.fragment.GameFragment"
         android:label="fragment_game"
         tools:layout="@layout/fragment_game" >
         <argument
