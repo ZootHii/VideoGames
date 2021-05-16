@@ -27,7 +27,7 @@ class GamesAdapter(
 
     override fun onBindViewHolder(holder: RecyclerViewViewHolder, position: Int) {
 
-        Log.d("log position", getItem(position).toString())
+        //Log.d("log position", getItem(position).toString())
 
         val currentItem = getItem(position)
         if (currentItem != null) {

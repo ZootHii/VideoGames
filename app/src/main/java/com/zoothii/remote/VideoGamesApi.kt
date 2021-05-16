@@ -1,6 +1,6 @@
 package com.zoothii.remote
 
-import com.zoothii.models.GameDetails
+import com.zoothii.models.Game
 import com.zoothii.models.PageResult
 import com.zoothii.util.Constants.DEFAULT_PAGE
 import com.zoothii.util.Constants.DEFAULT_PAGE_SIZE
@@ -20,6 +20,6 @@ interface VideoGamesApi {
     ): Response<PageResult>
 
     @GET("games/{id}")
-    suspend fun getGameDetail(@Path("id") id: Int): Response<GameDetails>
+    suspend fun getGameDetail(@Path("id") id: Int): Response<Game>
 
 }

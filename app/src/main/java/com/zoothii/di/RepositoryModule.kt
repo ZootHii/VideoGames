@@ -1,6 +1,6 @@
 package com.zoothii.di
 
-import com.zoothii.database.LikedGameDetailsDao
+import com.zoothii.database.VideoGamesDao
 import com.zoothii.database.VideoGamesDatabase
 import com.zoothii.remote.VideoGamesApi
 import com.zoothii.repositories.VideoGamesRepository
@@ -18,9 +18,9 @@ object RepositoryModule {
     @Provides
     fun provideVideoGamesRepository(
         videoGamesApi: VideoGamesApi,
-        likedGameDetailsDao: LikedGameDetailsDao
+        videoGamesDao: VideoGamesDao
     ): VideoGamesRepository {
-        return VideoGamesRepository(videoGamesApi, likedGameDetailsDao)
+        return VideoGamesRepository(videoGamesApi, videoGamesDao)
     }
 
     @Singleton

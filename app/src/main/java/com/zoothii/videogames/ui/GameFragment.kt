@@ -9,7 +9,7 @@ import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import coil.load
-import com.zoothii.models.GameDetails
+import com.zoothii.models.Game
 import com.zoothii.util.Helper.Companion.makeSnackBar
 import com.zoothii.videogames.MainActivity
 import com.zoothii.videogames.R
@@ -28,7 +28,6 @@ class GameFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //retainInstance = true
-
         (requireActivity() as MainActivity).hideNavigationBar()
         fragmentGameBinding = FragmentGameBinding.bind(view)
         arguments?.let {
@@ -40,20 +39,21 @@ class GameFragment :
             fragmentGameBinding.apply {
                 val releasedAt = "Released at ${gameDetails.released}"
                 val metaCriticRate = "Metacritic Rate ${gameDetails.metacritic}"
-
                 imageGameBackground.load(gameDetails.backgroundImage)
                 gameName.text = gameDetails.name
                 gameReleased.text = releasedAt
                 gameMetaCritic.text = metaCriticRate
                 gameDescription.text =
-                    HtmlCompat.fromHtml(
-                        gameDetails.description,
-                        HtmlCompat.FROM_HTML_MODE_LEGACY
-                    )
+                    gameDetails.description?.let {
+                        HtmlCompat.fromHtml(
+                            it,
+                            HtmlCompat.FROM_HTML_MODE_LEGACY
+                        )
+                    }
                 gameWebsite.apply {
                     text = gameDetails.website
                     setOnClickListener {
-                        onClickWebsite(gameDetails.website)
+                        gameDetails.website?.let { it1 -> onClickWebsite(it1) }
                     }
                 }
                 progressBarGame.visibility = View.GONE
@@ -66,27 +66,17 @@ class GameFragment :
         navigationBarControlWithBackButton()
     }
 
-    private fun onClickWebsite(website: String){
-        var site = website
-        if (!site.startsWith("http://") && !site.startsWith("https://")) {
-            site = "http://$website";
-        }
-        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(site))
-        startActivity(browserIntent)
-    }
-
-    private fun buttonBehaviour(gameDetails: GameDetails) {
-        videoGamesViewModel.getAllLikedGameDetails()
-            .observe(viewLifecycleOwner, { gameDetailsList ->
-                val likedGamesDetails = gameDetailsList.toCollection(ArrayList())
-
-                if (!likedGamesDetails.contains(gameDetails)) {
+    private fun buttonBehaviour(game: Game) {
+        videoGamesViewModel.checkIfGameIsInFavorites(gameId)
+            .observe(viewLifecycleOwner, { gameList ->
+                if (gameList.isNullOrEmpty() || gameList[0].id != game.id) {
                     fragmentGameBinding.apply {
                         gameAddLikedButton.apply {
                             setImageResource(R.drawable.ic_add_favorite)
                             setOnClickListener {
-                                addLikedGameDetails(gameDetails)
-                                val message = "${gameDetails.name} added to favorites."
+                                //addLikedGameDetails(game)
+                                addFavorite(game)
+                                val message = "${game.name} added to favorites."
                                 makeSnackBar(root, message, false)
                                     .setAction("OK") {}
                                     .show()
@@ -98,8 +88,9 @@ class GameFragment :
                         gameAddLikedButton.apply {
                             setImageResource(R.drawable.ic_delete)
                             setOnClickListener {
-                                deleteLikedGameDetails(gameDetails)
-                                val message = "${gameDetails.name} removed from favorites."
+                                //deleteLikedGameDetails(game)
+                                deleteFavorite(game)
+                                val message = "${game.name} removed from favorites."
                                 makeSnackBar(root, message, false)
                                     .setAction("OK") {}
                                     .show()
@@ -110,12 +101,13 @@ class GameFragment :
             })
     }
 
-    private fun deleteLikedGameDetails(gameDetails: GameDetails) {
-        videoGamesViewModel.deleteLikedGameDetails(gameDetails)
-    }
-
-    private fun addLikedGameDetails(gameDetails: GameDetails) {
-        videoGamesViewModel.addLikedGameDetails(gameDetails)
+    private fun onClickWebsite(website: String) {
+        var site = website
+        if (!site.startsWith("http://") && !site.startsWith("https://")) {
+            site = "http://$website";
+        }
+        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(site))
+        startActivity(browserIntent)
     }
 
     private fun navigationBarControlWithBackButton() {
@@ -131,4 +123,30 @@ class GameFragment :
                 }
             })
     }
+
+    private fun addFavorite(game: Game) {
+        game.favorite = 1
+        videoGamesViewModel.addGame(game)
+    }
+
+    private fun deleteFavorite(game: Game) {
+        game.favorite = 0
+        videoGamesViewModel.addGame(game)
+    }
 }
+
+
+/*    private fun deleteLikedGameDetails(game: Game) {
+        videoGamesViewModel.deleteLikedGameDetails(game)
+    }*/
+
+/*    private fun checkIfGameIsInFavorites(gameId: Int) {
+        videoGamesViewModel.checkIfGameIsInFavorites(gameId).observe(viewLifecycleOwner, {
+            //Log.d("response check if size", it.size.toString())
+        })
+    }*/
+
+
+/*    private fun addLikedGameDetails(game: Game) {
+        videoGamesViewModel.addGameToFavorites(game)
+    }*/

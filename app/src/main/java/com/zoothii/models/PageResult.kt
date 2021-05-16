@@ -2,7 +2,6 @@ package com.zoothii.models
 
 
 import com.google.gson.annotations.SerializedName
-import com.zoothii.models.Game
 
 data class PageResult(
     @SerializedName("count")

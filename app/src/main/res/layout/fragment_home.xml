@@ -12,7 +12,6 @@
         android:id="@+id/home_search_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:layout_margin="4dp"
         android:background="@drawable/rounded_border"
         app:iconifiedByDefault="false"
@@ -31,7 +30,8 @@
     <me.relex.circleindicator.CircleIndicator3
         android:id="@+id/home_circle_indicator"
         android:layout_width="match_parent"
-        android:layout_height="24dp"
+        android:layout_marginTop="2dp"
+        android:layout_height="12dp"
         android:layout_below="@+id/home_view_pager"
         android:layout_alignParentStart="true"
         app:ci_drawable="@drawable/circle_indicator_drawable" />
@@ -43,7 +43,9 @@
         android:layout_below="@id/home_circle_indicator"
         android:background="@color/white"
         android:clipToPadding="false"
-        android:padding="4dp"
+        android:paddingEnd="4dp"
+        android:paddingStart="4dp"
+        android:paddingBottom="4dp"
         tools:listitem="@layout/item_recycler_view">
 
     </androidx.recyclerview.widget.RecyclerView>
@@ -64,6 +66,7 @@
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
         android:layout_centerInParent="true"
         android:indeterminateTint="@color/purple_700"
         android:visibility="gone"

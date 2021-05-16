@@ -102,7 +102,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     canScrollToTop = true
                     if (!newText.isNullOrBlank()) {
                         canScrollToTop = false
-                        Log.d("response", "sssds")
                     }
                     scrollToPositionTop()
                     searchBehaviour(newText)
@@ -133,8 +132,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun scrollToPositionTop() {
         gamesAdapter.addLoadStateListener { loadState ->
             if (loadState.source.refresh is LoadState.NotLoading && !canScrollToTop) {
-                Log.d("response", "123")
-
                 fragmentHomeBinding.homeRecyclerView.scrollToPosition(0)
                 canScrollToTop = false
             }

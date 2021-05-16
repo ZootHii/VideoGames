@@ -5,11 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.zoothii.models.Game
-import com.zoothii.models.GameDetails
 
-@Database(entities = [GameDetails::class, Game::class], version = 1, exportSchema = false)
+@Database(entities = [Game::class], version = 1, exportSchema = false)
 abstract class VideoGamesDatabase : RoomDatabase() {
-    abstract fun likedGameDetailsDao(): LikedGameDetailsDao
+    abstract fun likedGameDetailsDao(): VideoGamesDao
 
     companion object {
         @Volatile

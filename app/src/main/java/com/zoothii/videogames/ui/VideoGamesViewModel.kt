@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
-import com.zoothii.models.GameDetails
+import com.zoothii.models.Game
 import com.zoothii.models.PageResult
 import com.zoothii.repositories.VideoGamesRepository
 import com.zoothii.util.Constants.DEFAULT_SEARCH_TEXT
@@ -38,8 +38,8 @@ class VideoGamesViewModel @Inject constructor(private val repository: VideoGames
         return mutableLiveData
     }
 
-    fun getGameDetails(id: Int): MutableLiveData<GameDetails> {
-        val mutableLiveData = MutableLiveData<GameDetails>()
+    fun getGameDetails(id: Int): MutableLiveData<Game> {
+        val mutableLiveData = MutableLiveData<Game>()
         viewModelScope.launch(Dispatchers.IO) {
             val response = repository.getGameDetails(id)
             if (response.isSuccessful) {
@@ -53,29 +53,38 @@ class VideoGamesViewModel @Inject constructor(private val repository: VideoGames
         return mutableLiveData
     }
 
-    fun addLikedGameDetails(gameDetails: GameDetails) {
+    fun addGame(game: Game) {
         viewModelScope.launch {
-            repository.addLikedGameDetails(gameDetails)
+            repository.addGame(game)
         }
     }
 
-    fun deleteLikedGameDetails(gameDetails: GameDetails) {
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.deleteLikedGameDetails(gameDetails)
-        }
-    }
+    //fun getAllFavoriteGames() = repository.getAllFavoriteGames()
+    //fun getAllFavoriteGames2(searchGameName: String? = "%%") = repository.getAllFavoriteGames2(searchGameName)
 
-    fun getAllLikedGameDetails() = repository.getAllLikedGameDetails()
+
     fun getAllGames() = repository.getAllGames()
+    fun checkIfGameIsInFavorites(gameId: Int) = repository.checkIfGameIsInFavorites(gameId)
+    fun deleteNonFavoriteGames() = viewModelScope.launch { repository.deleteNonFavoriteGames() }
 
 
+
+    // Search games from api
     private val currentSearch = MutableLiveData(DEFAULT_SEARCH_TEXT)
-
     val games = currentSearch.switchMap { searchString ->
         repository.getGamesPaging(searchString).cachedIn(viewModelScope)
     }
-
     fun searchGames(search: String? = DEFAULT_SEARCH_TEXT) {
         currentSearch.value = search
     }
+
+    // Search favorites from database room
+    private val currentSearchDao = MutableLiveData("%%")
+    val favoriteGames = currentSearchDao.switchMap { searchString ->
+        repository.getAllFavoriteGames2(searchString)
+    }
+    fun searchFavoriteGames(search: String? = "%%") {
+        currentSearchDao.value = search
+    }
+
 }
