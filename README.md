@@ -1,6 +1,8 @@
 # VideoGames
  video games -> list, search, add favorites android task
  
+ - <p><a href="https://www.youtube.com/watch?v=u5soD6a_mCQ">TEST VIDEO ON YOUTUBE</a></p>
+ 
  - MVVM design<br>
  - Dependency Inecjtion (Dagger Hilt)<br>
  - Retrofit2 (API)<br>
@@ -22,6 +24,13 @@
  Add-Remove Favorites snacbar with item name<br>
  Collapsing image for game details page<br>
  
-
- I can save games in room database but I used only for favorites, for games/home games I used api's search query
+ - I can save games in room database but I used only for favorites, for games/home games I used api's search query
  
+ <br>
+ <p align="center">
+   <img width="999" height="563" src="https://user-images.githubusercontent.com/34456517/118413550-91189380-b6a8-11eb-9594-be30f35278a2.png">
+</p><br>
+
+<p align="center">
+   <img width="999" height="563" src="https://user-images.githubusercontent.com/34456517/118413549-907ffd00-b6a8-11eb-8bb9-64743badb070.png">
+</p><br>
