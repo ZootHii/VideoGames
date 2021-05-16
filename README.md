@@ -2,6 +2,7 @@
  video games -> list, search, add favorites android task
  
  - <p><a href="https://www.youtube.com/watch?v=u5soD6a_mCQ">TEST VIDEO ON YOUTUBE</a></p>
+ - [APK-Video Games](/app-release.apk)
  
  - MVVM design<br>
  - Dependency Inecjtion (Dagger Hilt)<br>
