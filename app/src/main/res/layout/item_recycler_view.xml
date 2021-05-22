@@ -5,8 +5,8 @@
     android:layout_height="135dp"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_margin="2dp"
-    android:background="@drawable/item_border">
-
+    >
+    <!--android:background="@drawable/item_border"-->
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_view"

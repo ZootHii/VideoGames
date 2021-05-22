@@ -30,8 +30,10 @@ class VideoGamesPagingSource(
         return try {
             val response = videoGamesApi.getGames(position, search, params.loadSize)
             var games = arrayListOf<Game>()
+            var favoriteGames = arrayListOf<Game>()
             if (response.isSuccessful) {
                 games = response.body()?.games as ArrayList<Game>
+                favoriteGames = videoGamesDao.getAllFavoriteGames() as ArrayList<Game>
 
                 if (!DataHolder.getInstance().gamesToRemove.isNullOrEmpty()) { // remove viewpager games
                     val gamesToRemove = DataHolder.getInstance().gamesToRemove
@@ -41,6 +43,16 @@ class VideoGamesPagingSource(
                         }
                     }
                 }
+                favoriteGames.forEach { favoriteGame ->
+                    games.forEach { game ->
+                        if (game.id == favoriteGame.id){
+                            game.favorite = 1
+                        }
+                    }
+                }
+
+
+
             } else {
                 Log.d("Error", "error")
             }

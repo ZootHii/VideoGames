@@ -42,9 +42,10 @@
         android:layout_height="match_parent"
         android:layout_below="@id/home_circle_indicator"
         android:clipToPadding="false"
-        android:paddingStart="4dp"
-        android:paddingEnd="4dp"
-        android:paddingBottom="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginEnd="4dp"
+
         tools:listitem="@layout/item_recycler_view">
 
     </androidx.recyclerview.widget.RecyclerView>

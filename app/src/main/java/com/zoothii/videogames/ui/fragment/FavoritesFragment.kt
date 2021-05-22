@@ -6,6 +6,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.zoothii.adapters.FavoriteGamesAdapter
@@ -57,6 +58,24 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(true)
         }
+
+        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT){
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder,
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.bindingAdapterPosition
+                val game = favoriteGamesAdapter.getGameAt(position)
+                game.favorite = 0
+                videoGamesViewModel.addGame(game)
+            }
+        }).attachToRecyclerView(fragmentFavoritesBinding.favoritesRecyclerView)
+
     }
 
     private fun onClickItem(view: View, game: Game) {

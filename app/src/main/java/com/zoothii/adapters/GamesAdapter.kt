@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.Nullable
 import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
@@ -58,7 +59,10 @@ class GamesAdapter(
         fun setMarquee() {
             itemRecyclerViewBinding.gameName.isSelected = true
         }
+    }
 
+    fun getGameAt(position: Int): Game? {
+        return getItem(position)
     }
 
     companion object {

@@ -1,10 +1,13 @@
 package com.zoothii.videogames.ui.fragment
 
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.toColor
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -74,12 +77,15 @@ class GameFragment :
     }
 
     private fun buttonBehaviour(game: Game) {
-        videoGamesViewModel.isFavoriteGame(gameId)
-            .observe(viewLifecycleOwner) { gameList ->
+        videoGamesViewModel.isFavoriteGame(gameId).observe(viewLifecycleOwner) { gameList ->
                 if (gameList.isNullOrEmpty() || gameList[0].id != game.id) {
                     fragmentGameBinding.apply {
                         gameAddLikedButton.apply {
-                            setImageResource(R.drawable.ic_add_favorite)
+                            val icAddFavorites = ResourcesCompat.getDrawable(resources, R.drawable.ic_add_favorite, null)
+                            icAddFavorites?.setTint(Color.parseColor("#970000"))
+                            setImageDrawable(icAddFavorites)
+                            //setImageResource(R.drawable.ic_add_favorite)
+
                             setOnClickListener {
                                 addFavorite(game)
                                 val message = "${game.name} added to favorites."
@@ -92,7 +98,10 @@ class GameFragment :
                 } else {
                     fragmentGameBinding.apply {
                         gameAddLikedButton.apply {
-                            setImageResource(R.drawable.ic_delete)
+                            val icRemoveFavorites = ResourcesCompat.getDrawable(resources, R.drawable.ic_remove_favorite, null)
+                            icRemoveFavorites?.setTint(Color.parseColor("#0A0250"))
+                            setImageDrawable(icRemoveFavorites)
+                            //setImageResource(R.drawable.ic_remove_favorite)
                             setOnClickListener {
                                 deleteFavorite(game)
                                 val message = "${game.name} removed from favorites."

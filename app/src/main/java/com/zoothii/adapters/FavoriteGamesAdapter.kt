@@ -11,7 +11,8 @@ import com.zoothii.videogames.databinding.ItemRecyclerViewBinding
 
 class FavoriteGamesAdapter(
     @Nullable private val clickListener: ((Game) -> Unit)? = null,
-) : RecyclerView.Adapter<FavoriteGamesAdapter.LikedGamesViewHolder>() {
+
+    ) : RecyclerView.Adapter<FavoriteGamesAdapter.LikedGamesViewHolder>() {
 
     private var games: List<Game> = ArrayList()
 
@@ -34,6 +35,10 @@ class FavoriteGamesAdapter(
         if (holder.itemView.visibility == View.VISIBLE) {
             holder.setMarquee()
         }
+    }
+
+    fun getGameAt(position: Int): Game {
+        return games[position]
     }
 
     override fun getItemCount(): Int {
